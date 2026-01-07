@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>School Snacks & Drinks</title>
+<title>School Snacks & gggggg Drinks</title>
 <style>
 body {font-family: Arial, sans-serif; margin:0; background:#f4f4f9; color:#222;}
 header {background:#ff6f61; color:#fff; padding:20px; text-align:center;}
