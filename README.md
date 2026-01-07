@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -19,8 +18,6 @@ footer {text-align:center; padding:10px; background:#eee;}
 .adminPanel {display:none; background:#fff3cd; padding:20px; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,0.2);}
 h3 {margin-top:20px;}
 </style>
-</head>
-<body>
 
 <header>
 <h1>School Snacks & Drinks</h1>
@@ -238,4 +235,3 @@ if(confirm("Delete all orders, wishlist, donations?")){orders=[]; wishlist=[]; d
 </script>
 </body>
 </html>
-
