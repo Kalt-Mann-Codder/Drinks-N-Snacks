@@ -122,54 +122,50 @@ h3{margin-top:15px;}
 </footer>
 
 <script>
-// Firebase Config
+// Firebase config
 const firebaseConfig = {
-  apiKey: "YOUR_FIREBASE_API_KEY",
+  apiKey: "YOUR_API_KEY",
   authDomain: "YOUR_PROJECT.firebaseapp.com",
   databaseURL: "https://YOUR_PROJECT.firebaseio.com",
-  projectId: "YOUR_PROJECT_ID",
+  projectId: "YOUR_PROJECT",
   storageBucket: "YOUR_PROJECT.appspot.com",
   messagingSenderId: "YOUR_SENDER_ID",
   appId: "YOUR_APP_ID"
 };
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+const db=firebase.database();
 
-// Admin credentials
-const ADMIN_USERNAME="Kalt";
-const ADMIN_PASSWORD='A7v>H("h"?Td';
-const SECRET_CODE="secret page 101";
+// Admin
+const ADMIN_USERNAME="Kalt", ADMIN_PASSWORD='A7v>H("h"?Td', SECRET_CODE="secret page 101";
+let removedOrders=[];
 
 // Cart
-let cart = [];
-let removedOrders = [];
+let cart=[];
 
-// Helper validations
+// Validation
 function validName(name){return /^[A-Za-z ]+$/.test(name);}
 function validPhone(phone){return /^8[2-7]\d{7}$/.test(phone);}
 function validCurriculum(cur){return ["IGCSE","Cambridge","National"].includes(cur);}
 
 // CART
 function renderCart(){
-  const list = document.getElementById("cartList");
-  list.innerHTML = "";
-  let total = 0;
+  const list=document.getElementById("cartList");
+  list.innerHTML="";
+  let total=0;
   cart.forEach(i=>{
-    list.innerHTML += `<li>${i.name} x ${i.qty} = ${i.price*i.qty} MZN</li>`;
-    total += i.price*i.qty;
+    list.innerHTML+=`<li>${i.name} x ${i.qty} = ${i.price*i.qty} MZN</li>`;
+    total+=i.price*i.qty;
   });
-  document.getElementById("cartTotal").innerText = total;
+  document.getElementById("cartTotal").innerText=total;
 }
-
-// Add to cart
 document.querySelectorAll(".addCart").forEach(btn=>{
   btn.addEventListener("click",e=>{
     const productDiv=e.target.parentElement;
     const name=productDiv.dataset.name;
     const price=parseInt(productDiv.dataset.price);
     const qty=parseInt(productDiv.querySelector(".quantity").value);
-    const existing=cart.find(p=>p.name===name);
-    if(existing) existing.qty+=qty;
+    const exist=cart.find(p=>p.name===name);
+    if(exist) exist.qty+=qty;
     else cart.push({name,price,qty});
     renderCart();
   });
@@ -183,52 +179,32 @@ document.getElementById("placeOrder").addEventListener("click",()=>{
   const userCurriculum=document.getElementById("userCurriculum").value;
   if(!validName(userName)||!validPhone(userPhone)||!validCurriculum(userCurriculum)||!userGrade){alert("Fill all fields correctly"); return;}
   if(cart.length===0){alert("Add items to cart"); return;}
-  const order = {
-    userName,userPhone,userGrade,userCurriculum,
-    products: cart,
-    total: cart.reduce((sum,p)=>sum+p.price*p.qty,0),
-    date: Date.now()
-  };
+  const order={userName,userPhone,userGrade,userCurriculum,products:cart,total:cart.reduce((s,p)=>s+p.price*p.qty,0),date:Date.now()};
   db.ref("orders").push(order,err=>{
-    if(err) alert("Error placing order");
-    else{
-      alert("Order placed!");
-      cart=[];
-      renderCart();
-      renderUserOrders();
-      renderAdminOrders();
-    }
-  });
+    if(err) alert("Error placing order"); else{alert("Order placed!"); cart=[]; renderCart(); renderUserOrders(); renderAdminOrders();}});
 });
 
 // USER ORDERS
 function renderUserOrders(){
-  const myOrdersDiv=document.getElementById("myOrders");
-  myOrdersDiv.innerHTML="";
+  const container=document.getElementById("myOrders"); container.innerHTML="";
   const userName=document.getElementById("userName").value.trim();
   const userPhone=document.getElementById("userPhone").value.trim();
-  if(!validName(userName)||!validPhone(userPhone)){myOrdersDiv.innerHTML="Enter valid name & phone"; return;}
+  if(!validName(userName)||!validPhone(userPhone)){container.innerHTML="Enter valid name & phone"; return;}
   db.ref("orders").once("value",snap=>{
-    myOrdersDiv.innerHTML="";
+    container.innerHTML="";
     snap.forEach(child=>{
-      const o=child.val();
-      o.key=child.key;
+      const o=child.val(); o.key=child.key;
       if(o.userName===userName && o.userPhone===userPhone){
-        const div=document.createElement("div");
-        div.className="orderCard";
+        const div=document.createElement("div"); div.className="orderCard";
         div.innerHTML=`<strong>Order #${o.key}</strong><br>${o.products.map(p=>`${p.qty} x ${p.name} = ${p.qty*p.price} MZN`).join("<br>")}<br>Total: ${o.total} MZN
         <button onclick="cancelUserOrder('${o.key}')">Cancel</button>`;
-        myOrdersDiv.appendChild(div);
+        container.appendChild(div);
       }
     });
   });
 }
 window.cancelUserOrder=function(key){
-  if(confirm("Cancel this order?")){
-    db.ref("orders/"+key).remove(err=>{
-      if(!err){alert("Order canceled"); renderUserOrders(); renderAdminOrders();}
-    });
-  }
+  if(confirm("Cancel this order?")) db.ref("orders/"+key).remove(err=>{if(!err){alert("Order canceled"); renderUserOrders(); renderAdminOrders();}});
 }
 
 // ADMIN PANEL
@@ -238,35 +214,26 @@ document.getElementById("searchBar").addEventListener("keydown",e=>{
     if(u===ADMIN_USERNAME && p===ADMIN_PASSWORD){
       document.getElementById("adminPanel").style.display="block";
       renderAdminOrders();
-      renderAdminWishlist();
-      renderAdminDonations();
-    }else alert("Wrong credentials!");
+    } else alert("Wrong credentials!");
     e.target.value="";
   }
 });
 
-// ADMIN RENDER ORDERS
+// ADMIN ORDERS
 function renderAdminOrders(){
-  const container=document.getElementById("adminOrders");
-  container.innerHTML="";
+  const container=document.getElementById("adminOrders"); container.innerHTML="";
   db.ref("orders").once("value",snap=>{
     snap.forEach(child=>{
-      const o=child.val();
-      const div=document.createElement("div");
+      const o=child.val(); const div=document.createElement("div");
       div.className="orderCard";
-      div.innerHTML=`<strong>Order #${child.key}</strong> ${o.userName} (${o.userPhone}, Grade ${o.userGrade}, ${o.userCurriculum})<br>
-      ${o.products.map(p=>`${p.qty} x ${p.name} = ${p.qty*p.price} MZN`).join("<br>")}
-      <br>Total: ${o.total} MZN
+      div.innerHTML=`<strong>Order #${child.key}</strong> ${o.userName} (${o.userPhone}, Grade ${o.userGrade}, ${o.userCurriculum})<br>${o.products.map(p=>`${p.qty} x ${p.name} = ${p.qty*p.price} MZN`).join("<br>")}<br>Total: ${o.total} MZN
       <button onclick="cancelAdminOrder('${child.key}')">Cancel</button>`;
       container.appendChild(div);
     });
   });
 }
-window.cancelAdminOrder=function(key){
-  if(confirm("Cancel this order?")) db.ref("orders/"+key).remove(err=>{if(!err){alert("Order canceled"); renderUserOrders(); renderAdminOrders();}});
-}
-
-// TODO: Similar Firebase logic can be added for Wishlist & Donations
+window.cancelAdminOrder=function(key){if(confirm("Cancel this order?")) db.ref("orders/"+key).remove(err=>{if(!err){alert("Order canceled"); renderAdminOrders(); renderUserOrders();}});}
 </script>
 </body>
 </html>
+
