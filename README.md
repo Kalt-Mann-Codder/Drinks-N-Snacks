@@ -3,222 +3,239 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>School Bus of Drinks</title>
+<title>School Snacks & Drinks</title>
 <style>
-body{font-family:sans-serif;background:#f0f2f5;margin:0;padding:0;}
-.container{max-width:800px;margin:40px auto;padding:25px;background:#fff;border-radius:15px;box-shadow:0 8px 20px rgba(0,0,0,0.15);}
-h1,h2,h3{text-align:center;color:#222;margin-bottom:15px;}
-.products{display:flex;flex-wrap:wrap;justify-content:space-around;margin:25px 0;}
-.product{padding:12px 18px;background:#e8e8e8;border-radius:8px;text-align:center;width:30%;margin-bottom:15px;}
-.product button{margin-top:8px;padding:6px 12px;background:#007bff;color:#fff;border:none;border-radius:6px;cursor:pointer;}
-.product button:hover{background:#0056b3;}
-ul{list-style:none;padding:0;margin:10px 0;}
-ul li{padding:8px 6px;background:#f9f9f9;border-radius:6px;margin-bottom:5px;box-shadow:0 2px 5px rgba(0,0,0,0.05);}
-input[type=number], input[type=text], select{padding:6px;margin:5px 0;border-radius:6px;border:1px solid #ccc;width:100%;}
-button#placeOrder{background:#28a745;color:#fff;padding:12px 25px;border:none;border-radius:6px;cursor:pointer;margin-top:10px;display:block;width:100%;}
-button#placeOrder:hover{background:#218838;}
-button{outline:none;}
-button:disabled{background:#aaa;cursor:not-allowed;}
-.admin-panel{display:none;margin-top:30px;}
+body {font-family: Arial, sans-serif; margin:0; background:#f4f4f9; color:#222;}
+header {background:#ff6f61; color:#fff; padding:20px; text-align:center;}
+header input {padding:5px; width:60%; margin-top:10px; border-radius:5px; border:none;}
+nav a {color:white; text-decoration:none; margin:0 10px;}
+main {padding:20px;}
+section {background:white; padding:20px; border-radius:10px; margin-bottom:20px; box-shadow:0 5px 15px rgba(0,0,0,0.1);}
+.product, .orderCard, .donationCard, .wishlistCard {display:block; border:1px solid #ddd; border-radius:10px; padding:10px; margin:10px 0; width:100%; max-width:400px; text-align:left; transition: transform 0.2s; background:#fff;}
+.product:hover, .orderCard:hover {transform:scale(1.02); box-shadow:0 5px 15px rgba(0,0,0,0.2);}
+button {padding:5px 10px; margin-top:5px; cursor:pointer; background:#ff6f61; color:white; border:none; border-radius:5px;}
+input[type=number], input[type=text], select {padding:5px; margin:5px 0; width:100%;}
+footer {text-align:center; padding:10px; background:#eee;}
+.adminPanel {display:none; background:#fff3cd; padding:20px; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,0.2);}
+h3 {margin-top:20px;}
 </style>
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
 </head>
 <body>
-<div class="container">
-<h1>School Bus of Drinks</h1>
 
-<div class="products">
-  <div class="product" data-name="Salsa" data-price="25">
-    Salsa - 25 MZN <button class="addCart">Add</button> 
-    <button class="addWishlist">♥ Wishlist</button>
-  </div>
-  <div class="product" data-name="Senor Naks" data-price="10">
-    Senor Naks - 10 MZN <button class="addCart">Add</button> 
-    <button class="addWishlist">♥ Wishlist</button>
-  </div>
-  <div class="product" data-name="Red Bull" data-price="50">
-    Red Bull - 50 MZN <button class="addCart">Add</button> 
-    <button class="addWishlist">♥ Wishlist</button>
-  </div>
-  <div class="product" data-name="Fizz" data-price="25">
-    Fizz - 25 MZN <button class="addCart">Add</button> 
-    <button class="addWishlist">♥ Wishlist</button>
-  </div>
+<header>
+<h1>School Snacks & Drinks</h1>
+<input type="text" id="searchBar" placeholder="Search or type secret code...">
+<nav>
+<a href="#productsSection">Products</a> |
+<a href="#wishlistSection">Wish Notes</a> |
+<a href="#donationSection">Donation</a> |
+<a href="#ordersSection">My Orders</a>
+</nav>
+</header>
+
+<main>
+<section id="userSection">
+<h2>Your Details</h2>
+<input type="text" id="userName" placeholder="Your Name (letters only)">
+<input type="text" id="userPhone" placeholder="Phone Number (8XXXXXXXX)">
+<input type="text" id="userGrade" placeholder="Grade">
+<select id="userCurriculum">
+  <option value="">Select Curriculum</option>
+  <option value="National">National</option>
+  <option value="Cambridge">Cambridge</option>
+  <option value="IGCSE">IGCSE</option>
+</select>
+</section>
+
+<section id="productsSection">
+<h2>Products</h2>
+<div class="product" data-name="Salsa" data-price="25">
+<p>Salsa - 25 MZN</p>
+<input type="number" min="1" value="1" class="quantity">
+<button class="addOrder">Add to Order</button>
 </div>
+<div class="product" data-name="Naks" data-price="10">
+<p>Naks - 10 MZN</p>
+<input type="number" min="1" value="1" class="quantity">
+<button class="addOrder">Add to Order</button>
+</div>
+<div class="product" data-name="Red Bull" data-price="50">
+<p>Red Bull - 50 MZN</p>
+<input type="number" min="1" value="1" class="quantity">
+<button class="addOrder">Add to Order</button>
+</div>
+<div class="product" data-name="Fizz" data-price="25">
+<p>Fizz - 25 MZN</p>
+<input type="number" min="1" value="1" class="quantity">
+<button class="addOrder">Add to Order</button>
+</div>
+</section>
 
-<h2>Your Order</h2>
-<ul id="orderList"></ul>
-<p>Total: <span id="total">0</span> MZN</p>
+<section id="wishlistSection">
+<h2>Wish Notes</h2>
+<input type="text" id="wishName" placeholder="Your Name">
+<input type="text" id="wishPhone" placeholder="Phone Number">
+<input type="text" id="wishText" placeholder="What do you want?">
+<button id="addWish">Add Wish</button>
+<div id="wishList"></div>
+</section>
 
-<h3>Enter Your Details</h3>
-<label>Name: <input type="text" id="userName" placeholder="Letters only"></label><br>
-<label>Number: <input type="text" id="userNumber" placeholder="9 digits, starts with 8"></label><br>
-<label>Curriculum: 
-  <select id="userCorresponding">
-    <option value="">--Select--</option>
-    <option value="National">National</option>
-    <option value="Cambridge">Cambridge</option>
-    <option value="IGCSE">IGCSE</option>
-  </select>
-</label><br>
-<label>Donation: <input type="number" id="donation" min="0" value="0"></label><br>
-<label>Note: <input type="text" id="note" placeholder="Special instructions"></label><br>
-<button id="placeOrder">Place Order</button>
-<p id="message"></p>
+<section id="donationSection">
+<h2>Donation</h2>
+<input type="text" id="donorName" placeholder="Your Name">
+<input type="text" id="donorPhone" placeholder="Phone Number">
+<input type="number" id="donationAmount" placeholder="Amount">
+<button id="donateBtn">Donate</button>
+<div id="donationListUser"></div>
+<p>Payments via e-Mola: 875510022 | M-Pesa: 855458144</p>
+</section>
 
-<h2>Your Wishlist</h2>
-<ul id="wishlistList"></ul>
+<section id="ordersSection">
+<h2>My Orders</h2>
+<div id="myOrders"></div>
+</section>
 
-<h2 class="admin-trigger">Admin Panel</h2>
-<input type="text" id="adminCode" placeholder="Type secret page code">
-<div class="admin-panel">
+<section class="adminPanel" id="adminPanel">
 <h2>Admin Panel</h2>
-<label>Username: <input type="text" id="adminUser"></label><br>
-<label>Password: <input type="password" id="adminPass"></label><br>
-<button id="loginAdmin">Login</button>
+<button id="deleteHistory">Delete All History</button>
+<button id="undoCancel">Undo Last Cancel</button>
+<h3>Orders</h3>
 <div id="adminOrders"></div>
-</div>
-</div>
+<h3>Wishlist</h3>
+<div id="adminWishlist"></div>
+<h3>Donations</h3>
+<div id="adminDonations"></div>
+</section>
+
+<footer>
+<p>&copy; 2026 School Snacks & Drinks</p>
+</footer>
 
 <script>
-// Firebase config
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+const ADMIN_USERNAME="Kalt";
+const ADMIN_PASSWORD='A7v>H("h"?Td';
+const SECRET_CODE="secret page 101";
+const WEEK_MS=7*24*60*60*1000;
 
-let cart = [];
-let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+let orders=JSON.parse(localStorage.getItem("orders")||"[]").filter(o=>Date.now()-o.date<WEEK_MS);
+let wishlist=JSON.parse(localStorage.getItem("wishlist")||"[]");
+let donations=JSON.parse(localStorage.getItem("donations")||"[]");
+let removedOrders=[];
 
-function renderCart(){
-  const list = document.getElementById('orderList');
-  list.innerHTML = '';
-  let total = 0;
-  cart.forEach(i=>{
-    list.innerHTML += `<li>${i.name} x ${i.quantity} = ${i.price*i.quantity} MZN</li>`;
-    total += i.price*i.quantity;
-  });
-  document.getElementById('total').innerText = total;
-}
+function saveAll(){localStorage.setItem("orders",JSON.stringify(orders)); localStorage.setItem("wishlist",JSON.stringify(wishlist)); localStorage.setItem("donations",JSON.stringify(donations));}
 
-function renderWishlist(){
-  const listEl = document.getElementById('wishlistList');
-  listEl.innerHTML = '';
-  wishlist.forEach(i=>{
-    listEl.innerHTML += `<li>${i.name} - ${i.price} MZN <button onclick="moveToCart('${i.name}')">Add to Cart</button></li>`;
-  });
-}
+// Validation
+function validName(n){return /^[A-Za-z ]+$/.test(n);}
+function validPhone(p){return /^8[2-7]\d{7}$/.test(p);}
+function validCurriculum(c){return ["National","Cambridge","IGCSE"].includes(c);}
 
-function moveToCart(name){
-  const item = wishlist.find(i=>i.name===name);
-  if(item){
-    cart.push({...item, quantity:1});
-    wishlist = wishlist.filter(i=>i.name!==name);
-    localStorage.setItem('wishlist', JSON.stringify(wishlist));
-    renderCart();
-    renderWishlist();
-  }
-}
+// Add order
+document.querySelectorAll(".addOrder").forEach(btn=>{
+btn.addEventListener("click", e=>{
+const nameInApp=document.getElementById("userName").value.trim();
+const phone=document.getElementById("userPhone").value.trim();
+const grade=document.getElementById("userGrade").value.trim();
+const curriculum=document.getElementById("userCurriculum").value;
+if(!validName(nameInApp)){alert("Invalid Name"); return;}
+if(!validPhone(phone)){alert("Invalid Phone"); return;}
+if(!grade){alert("Enter Grade"); return;}
+if(!validCurriculum(curriculum)){alert("Select valid Curriculum"); return;}
 
-document.querySelectorAll('.addCart').forEach(btn=>{
-  btn.addEventListener('click', e=>{
-    const prod = e.target.parentElement;
-    const name = prod.dataset.name;
-    const price = parseFloat(prod.dataset.price);
-    const item = cart.find(i=>i.name===name);
-    if(item) item.quantity++;
-    else cart.push({name, price, quantity:1});
-    renderCart();
-  });
+const div=e.target.parentElement;
+const productName=div.dataset.name;
+const price=parseInt(div.dataset.price);
+const qty=parseInt(div.querySelector(".quantity").value);
+const order={id:Date.now(), nameInApp, phone, grade, curriculum, products:[{name:productName, qty, price}], total:qty*price, date:Date.now()};
+orders.push(order); saveAll(); alert(`Added ${qty} x ${productName}`); renderUserOrders(); renderAdminOrders();
+});
 });
 
-document.querySelectorAll('.addWishlist').forEach(btn=>{
-  btn.addEventListener('click', e=>{
-    const prod = e.target.parentElement;
-    const name = prod.dataset.name;
-    const price = parseFloat(prod.dataset.price);
-    if(!wishlist.find(i=>i.name===name)){
-      wishlist.push({name, price});
-      localStorage.setItem('wishlist', JSON.stringify(wishlist));
-      renderWishlist();
-    }
-  });
+// Render user orders
+function renderUserOrders(){
+const container=document.getElementById("myOrders"); container.innerHTML="";
+const name=document.getElementById("userName").value.trim();
+const phone=document.getElementById("userPhone").value.trim();
+if(!validName(name)||!validPhone(phone)){container.innerHTML="Enter valid Name & Phone to see orders."; return;}
+const userOrders=orders.filter(o=>o.nameInApp===name && o.phone===phone);
+if(userOrders.length===0){container.innerHTML="No orders yet."; return;}
+userOrders.forEach(o=>{
+let div=document.createElement("div"); div.className="orderCard";
+div.innerHTML=`<strong>Order #${o.id}</strong><br>${o.products.map(p=>`${p.qty} x ${p.name} = ${p.qty*p.price} MZN`).join("<br>")}<br>Total: ${o.total} MZN
+<button onclick="cancelUserOrder(${o.id})">Cancel</button>`;
+container.appendChild(div);
 });
-
-function validateInputs(name, number, curriculum){
-  if(!/^[a-zA-Z\s]+$/.test(name)) return 'Name must have letters only';
-  if(!/^8[2-7]\d{7}$/.test(number)) return 'Number must start with 8, second 2-7, total 9 digits';
-  if(!["National","Cambridge","IGCSE"].includes(curriculum)) return 'Select a valid curriculum';
-  return null;
 }
 
-document.getElementById('placeOrder').addEventListener('click', ()=>{
-  const userName = document.getElementById('userName').value.trim();
-  const userNumber = document.getElementById('userNumber').value.trim();
-  const userCorresponding = document.getElementById('userCorresponding').value;
-  const validation = validateInputs(userName,userNumber,userCorresponding);
-  if(validation){
-    alert(validation);
-    return;
-  }
-  if(cart.length===0) return alert('Add items first');
+// Cancel user order
+window.cancelUserOrder=function(id){
+const name=document.getElementById("userName").value.trim();
+const phone=document.getElementById("userPhone").value.trim();
+const index=orders.findIndex(o=>o.id===id && o.nameInApp===name && o.phone===phone);
+if(index>-1){removedOrders.push(orders[index]); orders.splice(index,1); saveAll(); renderUserOrders(); renderAdminOrders(); alert("Order canceled");}
+}
 
-  const donation = parseFloat(document.getElementById('donation').value) || 0;
-  const note = document.getElementById('note').value || '';
-  const total = cart.reduce((sum,i)=>sum+i.price*i.quantity,0);
+// Wishlist
+function renderWish(){const container=document.getElementById("wishList"); container.innerHTML=""; wishlist.forEach(w=>{let div=document.createElement("div"); div.className="wishlistCard"; div.textContent=`${w.wishText} by ${w.name} (${w.phone})`; container.appendChild(div);});}
+renderWish();
+document.getElementById("addWish").addEventListener("click",()=>{
+const name=document.getElementById("wishName").value.trim();
+const phone=document.getElementById("wishPhone").value.trim();
+const text=document.getElementById("wishText").value.trim();
+if(!validName(name)||!validPhone(phone)||!text){alert("Enter valid info"); return;}
+if(wishlist.some(w=>w.name===name && w.phone===phone)){alert("Already added"); return;}
+wishlist.push({name, phone, wishText:text}); saveAll(); renderWish(); renderAdminWishlist(); alert("Wish added");
+});
 
-  const order = {items:cart, donation, note, total, timestamp: Date.now(), userName, userNumber, userCorresponding};
-  db.collection('orders').add(order).then(()=>{
-    document.getElementById('message').innerText = 'Order placed successfully!';
-    cart = [];
-    renderCart();
-    document.getElementById('donation').value=0;
-    document.getElementById('note').value='';
-  }).catch(err=>console.error(err));
+// Donations
+function renderUserDonations(){
+const container=document.getElementById("donationListUser"); container.innerHTML="";
+const name=document.getElementById("donorName").value.trim(); const phone=document.getElementById("donorPhone").value.trim();
+donations.filter(d=>d.name===name && d.phone===phone).forEach(d=>{let div=document.createElement("div"); div.className="donationCard"; div.textContent=`${d.amt} MZN`; container.appendChild(div);});
+}
+renderUserDonations();
+document.getElementById("donateBtn").addEventListener("click",()=>{
+const name=document.getElementById("donorName").value.trim();
+const phone=document.getElementById("donorPhone").value.trim();
+const amt=document.getElementById("donationAmount").value.trim();
+if(!validName(name)||!validPhone(phone)||!amt){alert("Enter valid info"); return;}
+donations.push({name, phone, amt, date:Date.now()}); saveAll(); renderUserDonations(); renderAdminDonations(); alert(`Thanks for donating ${amt} MZN!`);
 });
 
 // Admin Panel
-const adminPanel = document.querySelector('.admin-panel');
-document.getElementById('adminCode').addEventListener('input', e=>{
-  if(e.target.value==='secret page 101') adminPanel.style.display='block';
-});
-
-const ADMIN_USER = 'Kalt';
-const ADMIN_PASS = 'A7v>H("h"?Td';
-
-document.getElementById('loginAdmin').addEventListener('click', ()=>{
-  const user = document.getElementById('adminUser').value;
-  const pass = document.getElementById('adminPass').value;
-  if(user===ADMIN_USER && pass===ADMIN_PASS){
-    alert('Admin logged in');
-    loadAdminOrders();
-  } else alert('Invalid credentials');
-});
-
-function loadAdminOrders(){
-  const container = document.getElementById('adminOrders');
-  container.innerHTML = '<h3>Orders:</h3>';
-  db.collection('orders').orderBy('timestamp','desc').get().then(snapshot=>{
-    snapshot.forEach(doc=>{
-      const o = doc.data();
-      const items = o.items.map(i=>`${i.name} x${i.quantity}`).join(', ');
-      container.innerHTML += `<p><b>${o.userName}</b> (${o.userNumber}, ${o.userCorresponding}) | Items: ${items} | Donation: ${o.donation} | Total: ${o.total} MZN | ${new Date(o.timestamp).toLocaleString()}</p>`;
-    });
-  });
+document.getElementById("searchBar").addEventListener("keydown", e=>{
+if(e.key==="Enter" && e.target.value===SECRET_CODE){
+let u=prompt("Username"); let p=prompt("Password");
+if(u===ADMIN_USERNAME && p===ADMIN_PASSWORD){
+document.getElementById("adminPanel").style.display="block"; renderAdminOrders(); renderAdminWishlist(); renderAdminDonations();}
+else alert("Wrong credentials!");
+e.target.value="";
 }
+});
 
-renderCart();
-renderWishlist();
+// Admin renders
+function renderAdminOrders(){const container=document.getElementById("adminOrders"); container.innerHTML=""; orders.forEach(o=>{let div=document.createElement("div"); div.className="orderCard"; div.innerHTML=`<strong>Order #${o.id}</strong> ${o.nameInApp} (${o.phone}, Grade ${o.grade}, ${o.curriculum})<br>${o.products.map(p=>`${p.qty} x ${p.name} = ${p.qty*p.price} MZN`).join("<br>")}<br>Total: ${o.total} MZN <button onclick="cancelOrder(${o.id})">Cancel</button>`; container.appendChild(div);});}
+window.cancelOrder=function(id){const index=orders.findIndex(o=>o.id===id); if(index>-1){removedOrders.push(orders[index]); orders.splice(index,1); saveAll(); renderAdminOrders(); renderUserOrders(); alert("Order canceled");}}
+
+// Admin Wishlist
+function renderAdminWishlist(){const container=document.getElementById("adminWishlist"); container.innerHTML=""; wishlist.forEach(w=>{let div=document.createElement("div"); div.className="wishlistCard"; div.textContent=`${w.wishText} by ${w.name} (${w.phone})`; container.appendChild(div);});}
+renderAdminWishlist();
+
+// Admin Donations
+function renderAdminDonations(){const container=document.getElementById("adminDonations"); container.innerHTML=""; donations.forEach(d=>{let div=document.createElement("div"); div.className="donationCard"; div.textContent=`${d.amt} MZN by ${d.name} (${d.phone})`; container.appendChild(div);});}
+renderAdminDonations();
+
+// Undo cancel
+document.getElementById("undoCancel").addEventListener("click",()=>{
+if(removedOrders.length===0){alert("Nothing to undo"); return;}
+orders.push(removedOrders.pop()); saveAll(); renderAdminOrders(); renderUserOrders(); alert("Undo done");
+});
+
+// Delete history
+document.getElementById("deleteHistory").addEventListener("click",()=>{
+if(confirm("Delete all orders, wishlist, donations?")){orders=[]; wishlist=[]; donations=[]; removedOrders=[]; saveAll(); renderAdminOrders(); renderAdminWishlist(); renderAdminDonations(); renderWish(); renderUserOrders(); renderUserDonations(); alert("All history deleted");}
+});
+
 </script>
 </body>
 </html>
-
 
