@@ -3,321 +3,222 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>School Drinks & Snacks</title>
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
+<title>School Bus of Drinks</title>
 <style>
-/* General Styles */
-body {margin:0; font-family: Arial, sans-serif; background:#f4f4f9; color:#222;}
-header {background:#ff6f61; color:#fff; padding:20px; text-align:center;}
-header input {padding:10px; width:90%; max-width:500px; margin-top:10px; border-radius:5px; border:none;}
-nav a {color:white; text-decoration:none; margin:0 10px;}
-main {padding:20px; max-width:1200px; margin:auto;}
-section {background:white; padding:20px; border-radius:10px; margin-bottom:20px; box-shadow:0 5px 15px rgba(0,0,0,0.1);}
-.product, .orderCard, .donationCard, .wishlistCard {display:flex; justify-content:space-between; align-items:center; border:1px solid #ddd; border-radius:10px; padding:10px; margin:10px 0; flex-wrap:wrap;}
-.product:hover, .orderCard:hover {box-shadow:0 5px 15px rgba(0,0,0,0.2);}
-button {padding:8px 15px; margin:5px; cursor:pointer; background:#ff6f61; color:white; border:none; border-radius:5px;}
-button:hover {background:#e65550;}
-input, select {padding:8px; margin:5px 0; border-radius:5px; border:1px solid #ccc; width:100%; max-width:300px;}
-.adminPanel {display:none; background:#fff3cd; padding:20px; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,0.2);}
-h2,h3 {margin-top:15px;}
-@media(max-width:600px){
-  .product, .orderCard, .donationCard, .wishlistCard {flex-direction:column; align-items:flex-start;}
-  header input {width:95%;}
-}
+body{font-family:sans-serif;background:#f0f2f5;margin:0;padding:0;}
+.container{max-width:800px;margin:40px auto;padding:25px;background:#fff;border-radius:15px;box-shadow:0 8px 20px rgba(0,0,0,0.15);}
+h1,h2,h3{text-align:center;color:#222;margin-bottom:15px;}
+.products{display:flex;flex-wrap:wrap;justify-content:space-around;margin:25px 0;}
+.product{padding:12px 18px;background:#e8e8e8;border-radius:8px;text-align:center;width:30%;margin-bottom:15px;}
+.product button{margin-top:8px;padding:6px 12px;background:#007bff;color:#fff;border:none;border-radius:6px;cursor:pointer;}
+.product button:hover{background:#0056b3;}
+ul{list-style:none;padding:0;margin:10px 0;}
+ul li{padding:8px 6px;background:#f9f9f9;border-radius:6px;margin-bottom:5px;box-shadow:0 2px 5px rgba(0,0,0,0.05);}
+input[type=number], input[type=text], select{padding:6px;margin:5px 0;border-radius:6px;border:1px solid #ccc;width:100%;}
+button#placeOrder{background:#28a745;color:#fff;padding:12px 25px;border:none;border-radius:6px;cursor:pointer;margin-top:10px;display:block;width:100%;}
+button#placeOrder:hover{background:#218838;}
+button{outline:none;}
+button:disabled{background:#aaa;cursor:not-allowed;}
+.admin-panel{display:none;margin-top:30px;}
 </style>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
 </head>
 <body>
+<div class="container">
+<h1>School Bus of Drinks</h1>
 
-<header>
-<h1>School Drinks & Snacks</h1>
-<input type="text" id="searchBar" placeholder="Search or type secret code...">
-<nav>
-<a href="#productsSection">Products</a> |
-<a href="#wishlistSection">Wish Notes</a> |
-<a href="#donationSection">Donation</a> |
-<a href="#ordersSection">My Orders</a>
-</nav>
-</header>
-
-<main>
-<!-- User Info -->
-<section id="userSection">
-<h2>Enter Your Details</h2>
-<input type="text" id="userName" placeholder="Your Name in App">
-<input type="text" id="userPhone" placeholder="Phone Number (9 digits, start 8)">
-<input type="text" id="userGrade" placeholder="Grade">
-<select id="userCurriculum">
-  <option value="">Select Curriculum</option>
-  <option value="National">National</option>
-  <option value="Cambridge">Cambridge</option>
-  <option value="IGCSE">IGCSE</option>
-</select>
-</section>
-
-<!-- Products -->
-<section id="productsSection">
-<h2>Our Products</h2>
-<div class="product" data-name="Salsa" data-price="25">
-<p>Salsa - 25 MZN</p>
-<input type="number" min="1" value="1" class="quantity">
-<button class="addOrder">Add to Order</button>
+<div class="products">
+  <div class="product" data-name="Salsa" data-price="25">
+    Salsa - 25 MZN <button class="addCart">Add</button> 
+    <button class="addWishlist">♥ Wishlist</button>
+  </div>
+  <div class="product" data-name="Senor Naks" data-price="10">
+    Senor Naks - 10 MZN <button class="addCart">Add</button> 
+    <button class="addWishlist">♥ Wishlist</button>
+  </div>
+  <div class="product" data-name="Red Bull" data-price="50">
+    Red Bull - 50 MZN <button class="addCart">Add</button> 
+    <button class="addWishlist">♥ Wishlist</button>
+  </div>
+  <div class="product" data-name="Fizz" data-price="25">
+    Fizz - 25 MZN <button class="addCart">Add</button> 
+    <button class="addWishlist">♥ Wishlist</button>
+  </div>
 </div>
-<div class="product" data-name="Naks" data-price="10">
-<p>Naks - 10 MZN</p>
-<input type="number" min="1" value="1" class="quantity">
-<button class="addOrder">Add to Order</button>
-</div>
-<div class="product" data-name="Red Bull" data-price="50">
-<p>Red Bull - 50 MZN</p>
-<input type="number" min="1" value="1" class="quantity">
-<button class="addOrder">Add to Order</button>
-</div>
-<div class="product" data-name="Fizz" data-price="25">
-<p>Fizz - 25 MZN</p>
-<input type="number" min="1" value="1" class="quantity">
-<button class="addOrder">Add to Order</button>
-</div>
-</section>
 
-<!-- Wishlist -->
-<section id="wishlistSection">
-<h2>Wish Notes</h2>
-<input type="text" id="wishName" placeholder="Your Name">
-<input type="text" id="wishPhone" placeholder="Phone Number">
-<input type="text" id="wishText" placeholder="What do you want?">
-<button id="addWish">Add Wish</button>
-<div id="wishList"></div>
-</section>
+<h2>Your Order</h2>
+<ul id="orderList"></ul>
+<p>Total: <span id="total">0</span> MZN</p>
 
-<!-- Donations -->
-<section id="donationSection">
-<h2>Donation</h2>
-<input type="text" id="donorName" placeholder="Your Name">
-<input type="text" id="donorPhone" placeholder="Phone Number">
-<input type="number" id="donationAmount" placeholder="Amount MZN">
-<button id="donateBtn">Donate</button>
-<div id="donationListUser"></div>
-<p>e-Mola: 875510022 | M-Pesa: 855458144</p>
-</section>
+<h3>Enter Your Details</h3>
+<label>Name: <input type="text" id="userName" placeholder="Letters only"></label><br>
+<label>Number: <input type="text" id="userNumber" placeholder="9 digits, starts with 8"></label><br>
+<label>Curriculum: 
+  <select id="userCorresponding">
+    <option value="">--Select--</option>
+    <option value="National">National</option>
+    <option value="Cambridge">Cambridge</option>
+    <option value="IGCSE">IGCSE</option>
+  </select>
+</label><br>
+<label>Donation: <input type="number" id="donation" min="0" value="0"></label><br>
+<label>Note: <input type="text" id="note" placeholder="Special instructions"></label><br>
+<button id="placeOrder">Place Order</button>
+<p id="message"></p>
 
-<!-- Orders -->
-<section id="ordersSection">
-<h2>My Orders</h2>
-<div id="myOrders"></div>
-</section>
+<h2>Your Wishlist</h2>
+<ul id="wishlistList"></ul>
 
-<!-- Admin Panel -->
-<section class="adminPanel" id="adminPanel">
+<h2 class="admin-trigger">Admin Panel</h2>
+<input type="text" id="adminCode" placeholder="Type secret page code">
+<div class="admin-panel">
 <h2>Admin Panel</h2>
-<button id="deleteHistory">Delete All History</button>
-<button id="undoCancel">Undo Last Cancel</button>
-<h3>Orders</h3>
+<label>Username: <input type="text" id="adminUser"></label><br>
+<label>Password: <input type="password" id="adminPass"></label><br>
+<button id="loginAdmin">Login</button>
 <div id="adminOrders"></div>
-<h3>Wishlist</h3>
-<div id="adminWishlist"></div>
-<h3>Donations</h3>
-<div id="adminDonations"></div>
-</section>
-</main>
-
-<footer>
-<p>&copy; 2026 School Drinks & Snacks</p>
-</footer>
+</div>
+</div>
 
 <script>
-// ----- Firebase Config -----
+// Firebase config
 const firebaseConfig = {
   apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT.firebaseio.com",
-  projectId: "YOUR_PROJECT",
-  storageBucket: "YOUR_PROJECT.appspot.com",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
   messagingSenderId: "YOUR_SENDER_ID",
   appId: "YOUR_APP_ID"
 };
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+const db = firebase.firestore();
 
-// ----- Admin & Secret -----
-const ADMIN_USERNAME="Kalt", ADMIN_PASSWORD='A7v>H("h"?Td', SECRET_CODE="secret page 101";
-let removedOrders=[];
+let cart = [];
+let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
 
-// ----- Utility Validation -----
-function validName(name){return /^[A-Za-z ]+$/.test(name);}
-function validPhone(phone){return /^8[2-7]\d{7}$/.test(phone);}
-function validCurriculum(cur){return ["IGCSE","Cambridge","National"].includes(cur);}
+function renderCart(){
+  const list = document.getElementById('orderList');
+  list.innerHTML = '';
+  let total = 0;
+  cart.forEach(i=>{
+    list.innerHTML += `<li>${i.name} x ${i.quantity} = ${i.price*i.quantity} MZN</li>`;
+    total += i.price*i.quantity;
+  });
+  document.getElementById('total').innerText = total;
+}
 
-// ----- Orders -----
-function addOrder(product){
-  const nameInApp=document.getElementById("userName").value.trim();
-  const phone=document.getElementById("userPhone").value.trim();
-  const grade=document.getElementById("userGrade").value.trim();
-  const curriculum=document.getElementById("userCurriculum").value;
-  if(!validName(nameInApp)||!validPhone(phone)||!grade||!validCurriculum(curriculum)){
-    alert("Enter valid user details"); return;
+function renderWishlist(){
+  const listEl = document.getElementById('wishlistList');
+  listEl.innerHTML = '';
+  wishlist.forEach(i=>{
+    listEl.innerHTML += `<li>${i.name} - ${i.price} MZN <button onclick="moveToCart('${i.name}')">Add to Cart</button></li>`;
+  });
+}
+
+function moveToCart(name){
+  const item = wishlist.find(i=>i.name===name);
+  if(item){
+    cart.push({...item, quantity:1});
+    wishlist = wishlist.filter(i=>i.name!==name);
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    renderCart();
+    renderWishlist();
   }
-  const qty=parseInt(product.querySelector(".quantity").value);
-  const name=product.dataset.name;
-  const price=parseInt(product.dataset.price);
-  const orderId=Date.now();
-  const orderData={id:orderId,nameInApp,phone,grade,curriculum,products:[{name,qty,price}],total:qty*price,date:Date.now()};
-  db.ref("orders/"+orderId).set(orderData);
-  alert(`Added ${qty} x ${name}`);
-  renderUserOrders();
-  renderAdminOrders();
 }
 
-document.querySelectorAll(".addOrder").forEach(btn=>{
-  btn.addEventListener("click", e=>addOrder(e.target.parentElement));
-});
-
-// ----- Render User Orders -----
-function renderUserOrders(){
-  const container=document.getElementById("myOrders"); container.innerHTML="";
-  const name=document.getElementById("userName").value.trim();
-  const phone=document.getElementById("userPhone").value.trim();
-  if(!validName(name)||!validPhone(phone)){container.innerHTML="Enter valid Name & Phone to see orders."; return;}
-  db.ref("orders").orderByChild("phone").equalTo(phone).once("value", snapshot=>{
-    const ordersData=snapshot.val();
-    container.innerHTML="";
-    if(!ordersData){container.innerHTML="No orders yet."; return;}
-    Object.values(ordersData).forEach(o=>{
-      if(o.nameInApp!==name) return;
-      let div=document.createElement("div"); div.className="orderCard";
-      div.innerHTML=`<strong>Order #${o.id}</strong><br>${o.products.map(p=>`${p.qty} x ${p.name} = ${p.qty*p.price} MZN`).join("<br>")}<br>Total: ${o.total} MZN
-      <button onclick="cancelUserOrder('${o.id}')">Cancel</button>`;
-      container.appendChild(div);
-    });
-  });
-}
-
-window.cancelUserOrder=function(id){
-  db.ref("orders/"+id).remove();
-  renderUserOrders();
-  renderAdminOrders();
-  alert("Order canceled!");
-}
-
-// ----- Wishlist -----
-function renderWish(){const container=document.getElementById("wishList"); container.innerHTML="";
-db.ref("wishlist").once("value", snap=>{
-  const data=snap.val();
-  if(!data) return;
-  Object.values(data).forEach(w=>{
-    const div=document.createElement("div"); div.className="wishlistCard"; div.textContent=`${w.wishText} by ${w.name} (${w.phone})`; container.appendChild(div);
+document.querySelectorAll('.addCart').forEach(btn=>{
+  btn.addEventListener('click', e=>{
+    const prod = e.target.parentElement;
+    const name = prod.dataset.name;
+    const price = parseFloat(prod.dataset.price);
+    const item = cart.find(i=>i.name===name);
+    if(item) item.quantity++;
+    else cart.push({name, price, quantity:1});
+    renderCart();
   });
 });
-}
-renderWish();
 
-document.getElementById("addWish")?.addEventListener("click", ()=>{
-  const name=document.getElementById("wishName").value.trim();
-  const phone=document.getElementById("wishPhone").value.trim();
-  const text=document.getElementById("wishText").value.trim();
-  if(!validName(name)||!validPhone(phone)||!text){alert("Enter valid info"); return;}
-  const wishId=Date.now();
-  db.ref("wishlist/"+wishId).set({id:wishId,name,phone,wishText:text});
-  alert("Wish added!");
-  renderWish();
-  renderAdminWishlist();
-});
-
-// ----- Donations -----
-function renderUserDonations(){const container=document.getElementById("donationListUser"); container.innerHTML="";
-const name=document.getElementById("donorName").value.trim();
-const phone=document.getElementById("donorPhone").value.trim();
-db.ref("donations").orderByChild("phone").equalTo(phone).once("value", snap=>{
-  const data=snap.val(); if(!data) return;
-  Object.values(data).forEach(d=>{
-    if(d.name!==name) return;
-    const div=document.createElement("div"); div.className="donationCard"; div.textContent=`${d.amt} MZN`; container.appendChild(div);
+document.querySelectorAll('.addWishlist').forEach(btn=>{
+  btn.addEventListener('click', e=>{
+    const prod = e.target.parentElement;
+    const name = prod.dataset.name;
+    const price = parseFloat(prod.dataset.price);
+    if(!wishlist.find(i=>i.name===name)){
+      wishlist.push({name, price});
+      localStorage.setItem('wishlist', JSON.stringify(wishlist));
+      renderWishlist();
+    }
   });
 });
-}
-document.getElementById("donateBtn")?.addEventListener("click", ()=>{
-  const name=document.getElementById("donorName").value.trim();
-  const phone=document.getElementById("donorPhone").value.trim();
-  const amt=parseInt(document.getElementById("donationAmount").value);
-  if(!validName(name)||!validPhone(phone)||!amt){alert("Enter valid info"); return;}
-  const donationId=Date.now();
-  db.ref("donations/"+donationId).set({id:donationId,name,phone,amt,date:Date.now()});
-  alert(`Thanks for donating ${amt} MZN!`);
-  renderUserDonations();
-  renderAdminDonations();
-});
 
-// ----- Secret Admin Panel -----
-document.getElementById("searchBar")?.addEventListener("keydown", e=>{
-  if(e.key==="Enter" && e.target.value===SECRET_CODE){
-    const u=prompt("Admin Username"); const p=prompt("Admin Password");
-    if(u===ADMIN_USERNAME && p===ADMIN_PASSWORD){
-      document.getElementById("adminPanel").style.display="block";
-      renderAdminOrders(); renderAdminWishlist(); renderAdminDonations();
-    }else alert("Wrong credentials!");
-    e.target.value="";
+function validateInputs(name, number, curriculum){
+  if(!/^[a-zA-Z\s]+$/.test(name)) return 'Name must have letters only';
+  if(!/^8[2-7]\d{7}$/.test(number)) return 'Number must start with 8, second 2-7, total 9 digits';
+  if(!["National","Cambridge","IGCSE"].includes(curriculum)) return 'Select a valid curriculum';
+  return null;
+}
+
+document.getElementById('placeOrder').addEventListener('click', ()=>{
+  const userName = document.getElementById('userName').value.trim();
+  const userNumber = document.getElementById('userNumber').value.trim();
+  const userCorresponding = document.getElementById('userCorresponding').value;
+  const validation = validateInputs(userName,userNumber,userCorresponding);
+  if(validation){
+    alert(validation);
+    return;
   }
+  if(cart.length===0) return alert('Add items first');
+
+  const donation = parseFloat(document.getElementById('donation').value) || 0;
+  const note = document.getElementById('note').value || '';
+  const total = cart.reduce((sum,i)=>sum+i.price*i.quantity,0);
+
+  const order = {items:cart, donation, note, total, timestamp: Date.now(), userName, userNumber, userCorresponding};
+  db.collection('orders').add(order).then(()=>{
+    document.getElementById('message').innerText = 'Order placed successfully!';
+    cart = [];
+    renderCart();
+    document.getElementById('donation').value=0;
+    document.getElementById('note').value='';
+  }).catch(err=>console.error(err));
 });
 
-// ----- Admin Render Functions -----
-function renderAdminOrders(){
-  const container=document.getElementById("adminOrders"); container.innerHTML="";
-  db.ref("orders").once("value", snap=>{
-    const data=snap.val();
-    if(!data) return;
-    Object.values(data).forEach(o=>{
-      const div=document.createElement("div"); div.className="orderCard";
-      div.innerHTML=`<strong>Order #${o.id}</strong> ${o.nameInApp} (${o.phone}, Grade ${o.grade}, ${o.curriculum})<br>${o.products.map(p=>`${p.qty} x ${p.name} = ${p.qty*p.price} MZN`).join("<br>")}<br>Total: ${o.total} MZN <button onclick="cancelOrder('${o.id}')">Cancel</button>`;
-      container.appendChild(div);
+// Admin Panel
+const adminPanel = document.querySelector('.admin-panel');
+document.getElementById('adminCode').addEventListener('input', e=>{
+  if(e.target.value==='secret page 101') adminPanel.style.display='block';
+});
+
+const ADMIN_USER = 'Kalt';
+const ADMIN_PASS = 'A7v>H("h"?Td';
+
+document.getElementById('loginAdmin').addEventListener('click', ()=>{
+  const user = document.getElementById('adminUser').value;
+  const pass = document.getElementById('adminPass').value;
+  if(user===ADMIN_USER && pass===ADMIN_PASS){
+    alert('Admin logged in');
+    loadAdminOrders();
+  } else alert('Invalid credentials');
+});
+
+function loadAdminOrders(){
+  const container = document.getElementById('adminOrders');
+  container.innerHTML = '<h3>Orders:</h3>';
+  db.collection('orders').orderBy('timestamp','desc').get().then(snapshot=>{
+    snapshot.forEach(doc=>{
+      const o = doc.data();
+      const items = o.items.map(i=>`${i.name} x${i.quantity}`).join(', ');
+      container.innerHTML += `<p><b>${o.userName}</b> (${o.userNumber}, ${o.userCorresponding}) | Items: ${items} | Donation: ${o.donation} | Total: ${o.total} MZN | ${new Date(o.timestamp).toLocaleString()}</p>`;
     });
   });
 }
 
-window.cancelOrder=function(id){
-  removedOrders.push(id);
-  db.ref("orders/"+id).remove();
-  renderAdminOrders();
-  renderUserOrders();
-  alert("Order canceled!");
-}
-
-function renderAdminWishlist(){
-  const container=document.getElementById("adminWishlist"); container.innerHTML="";
-  db.ref("wishlist").once("value", snap=>{
-    const data=snap.val();
-    if(!data) return;
-    Object.values(data).forEach(w=>{
-      const div=document.createElement("div"); div.className="wishlistCard"; div.textContent=`${w.wishText} by ${w.name} (${w.phone})`; container.appendChild(div);
-    });
-  });
-}
-
-function renderAdminDonations(){
-  const container=document.getElementById("adminDonations"); container.innerHTML="";
-  db.ref("donations").once("value", snap=>{
-    const data=snap.val(); if(!data) return;
-    Object.values(data).forEach(d=>{
-      const div=document.createElement("div"); div.className="donationCard"; div.textContent=`${d.amt} MZN by ${d.name} (${d.phone})`; container.appendChild(div);
-    });
-  });
-}
-
-// Undo & Delete History
-document.getElementById("undoCancel")?.addEventListener("click", ()=>{
-  if(removedOrders.length===0){alert("Nothing to undo."); return;}
-  alert("Undo works only manually with Firebase DB");
-});
-
-document.getElementById("deleteHistory")?.addEventListener("click", ()=>{
-  if(confirm("Delete all data?")){
-    db.ref().remove();
-    alert("All history deleted!");
-    renderAdminOrders(); renderAdminWishlist(); renderAdminDonations(); renderWish(); renderUserOrders(); renderUserDonations();
-  }
-});
+renderCart();
+renderWishlist();
 </script>
 </body>
 </html>
+
 
